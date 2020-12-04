@@ -1,34 +1,22 @@
-extends Area2D
+extends KinematicBody2D
 
-export var speed = 400  # How fast the player will move (pixels/sec).
-var screen_size  # Size of the game window.
+const GRAVITY = 200.0
+const WALK_SPEED = 200
 
-func _ready():
-	screen_size = get_viewport_rect().size
+var velocity = Vector2()
 
-func _process(delta):
-	var velocity = Vector2()  # The player's movement vector.
-	if Input.is_action_pressed("ui_right"):
-		velocity.x += 1
+func _physics_process(delta):
+	velocity.y += delta * GRAVITY
+
 	if Input.is_action_pressed("ui_left"):
-		velocity.x -= 1
-	if Input.is_action_pressed("ui_down"):
-		velocity.y += 1
-	if Input.is_action_pressed("ui_up"):
-		velocity.y -= 1
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-	
-	$AnimatedSprite.play()
-	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x)
-	position.y = clamp(position.y, 0, screen_size.y)
-	
-	if velocity.x != 0:
-		$AnimatedSprite.animation = "walk"
-		$AnimatedSprite.flip_v = false
-		# See the note below about boolean assignment
-		$AnimatedSprite.flip_h = velocity.x < 0
-	elif velocity.y == 0 && velocity.x == 0:
-		$AnimatedSprite.animation = "idle"
-		$AnimatedSprite.flip_v = velocity.y > 0
+		velocity.x = -WALK_SPEED
+	elif Input.is_action_pressed("ui_right"):
+		velocity.x =  WALK_SPEED
+	else:
+		velocity.x = 0
+
+	# We don't need to multiply velocity by delta because "move_and_slide" already takes delta time into account.
+
+	# The second parameter of "move_and_slide" is the normal pointing up.
+	# In the case of a 2D platformer, in Godot, upward is negative y, which translates to -1 as a normal.
+	move_and_slide(velocity, Vector2(0, -1))
