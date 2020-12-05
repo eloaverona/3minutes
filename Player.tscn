@@ -169,3 +169,7 @@ animation = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 2.20731, -1.01418 )
 shape = SubResource( 26 )
+
+[node name="PlatformDetector" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, 6 )
