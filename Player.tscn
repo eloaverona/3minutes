@@ -26,6 +26,26 @@ flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 96, 0, 32, 32 )
 
+[sub_resource type="AtlasTexture" id=27]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 128, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=28]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 160, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=29]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 192, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=30]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 224, 0, 32, 32 )
+
 [sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 2 )
@@ -76,26 +96,6 @@ flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 96, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=15]
-flags = 4
-atlas = ExtResource( 4 )
-region = Rect2( 128, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=16]
-flags = 4
-atlas = ExtResource( 4 )
-region = Rect2( 160, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=17]
-flags = 4
-atlas = ExtResource( 4 )
-region = Rect2( 192, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=18]
-flags = 4
-atlas = ExtResource( 4 )
-region = Rect2( 224, 0, 32, 32 )
-
 [sub_resource type="AtlasTexture" id=19]
 flags = 4
 atlas = ExtResource( 1 )
@@ -133,13 +133,18 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
+"loop": false,
+"name": "fall",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "run",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ) ],
-"loop": true,
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
+"loop": false,
 "name": "jump",
 "speed": 5.0
 }, {
@@ -150,26 +155,27 @@ animations = [ {
 } ]
 
 [sub_resource type="CapsuleShape2D" id=26]
-radius = 16.2629
-height = 21.266
+radius = 8.9462
+height = 8.0748
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 1.37915, 1.78226 )
+position = Vector2( 1.08185, 6.53909 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true
 }
+SPEED = Vector2( 100, 100 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 3.29358, -7.52979 )
-scale = Vector2( 2, 2 )
 frames = SubResource( 25 )
-animation = "idle"
+animation = "fall"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 2.20731, -1.01418 )
+position = Vector2( 2.80191, -7.25751 )
 shape = SubResource( 26 )
 
 [node name="PlatformDetector" type="RayCast2D" parent="."]
+position = Vector2( 4.75918, 4.86813 )
 enabled = true
 cast_to = Vector2( 0, 6 )
