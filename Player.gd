@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 
-export var SPEED = Vector2(100.0, 100.0)
+export var SPEED = Vector2(100.0, 300.0)
 onready var GRAVITY = ProjectSettings.get("physics/2d/default_gravity")
 onready var platform_detector = $PlatformDetector
 onready var animation_player = $AnimationPlayer
@@ -14,7 +14,7 @@ var velocity = Vector2.ZERO
 
 
 func _physics_process(delta):
-	velocity.y += delta * GRAVITY * 1.5 ## player is affected by 
+	velocity.y += delta * GRAVITY  ## player is affected by gravity
 	
 	$AnimatedSprite.play()
 	
@@ -26,9 +26,19 @@ func _physics_process(delta):
 	velocity = calculate_move_velocity(velocity, direction, SPEED, is_jump_interrupted)
 
 	var snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE if direction.y == 0.0 else Vector2.ZERO
-	var is_on_platform = platform_detector.is_colliding()
+	#var is_on_platform = platform_detector.is_colliding()
+	if(Input.is_action_pressed("ui_up")):
+		
+#		print("platform")
+#		print(is_on_platform)
+		print("direction")
+		print(direction)
+#		print("floor")
+#		print(is_on_floor())
+#		print("snap vector")
+#		print(snap_vector)
 	velocity = move_and_slide_with_snap(
-		velocity, snap_vector, FLOOR_NORMAL, not is_on_platform, 4, 0.9, false
+		velocity, snap_vector, FLOOR_NORMAL, false, 4, 0.9, false
 	)
 
 	# When the character’s direction changes, we want to to scale the Sprite accordingly to flip it.
