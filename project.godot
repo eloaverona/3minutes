@@ -35,6 +35,10 @@ window/stretch/aspect="keep"
 
 singletons=[ "res://git_api.gdnlib", "res://godot-git-plugin-v1.2-x11/git_api.gdnlib" ]
 
+[physics]
+
+2d/default_gravity=900
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
