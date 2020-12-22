@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 
-export var SPEED = Vector2(100.0, 300.0)
+export var SPEED = Vector2(80.0, 200.0)
 onready var GRAVITY = ProjectSettings.get("physics/2d/default_gravity")
 onready var platform_detector = $PlatformDetector
 onready var animation_player = $AnimationPlayer
@@ -26,17 +26,7 @@ func _physics_process(delta):
 	velocity = calculate_move_velocity(velocity, direction, SPEED, is_jump_interrupted)
 
 	var snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE if direction.y == 0.0 else Vector2.ZERO
-	#var is_on_platform = platform_detector.is_colliding()
-	if(Input.is_action_pressed("ui_up")):
-		
-#		print("platform")
-#		print(is_on_platform)
-		print("direction")
-		print(direction)
-#		print("floor")
-#		print(is_on_floor())
-#		print("snap vector")
-#		print(snap_vector)
+
 	velocity = move_and_slide_with_snap(
 		velocity, snap_vector, FLOOR_NORMAL, false, 4, 0.9, false
 	)
