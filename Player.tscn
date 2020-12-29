@@ -185,3 +185,10 @@ cast_to = Vector2( 0, 6 )
 position = Vector2( 2.77795, -21.1323 )
 current = true
 process_mode = 0
+
+[node name="PressedJumpTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="LeftPlatformTimer" type="Timer" parent="."]
+[connection signal="timeout" from="PressedJumpTimer" to="." method="_on_PressedJumpTimer_timeout"]
+[connection signal="timeout" from="LeftPlatformTimer" to="." method="_on_LeftPlatformTimer_timeout"]

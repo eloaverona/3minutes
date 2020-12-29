@@ -13,6 +13,7 @@ const FLOOR_NORMAL = Vector2.UP
 const FLOOR_DETECT_DISTANCE = 20.0
 
 var velocity = Vector2.ZERO
+var pressedJump = false
 
 
 func _physics_process(delta):
@@ -48,9 +49,15 @@ func _physics_process(delta):
 
 
 func get_direction():
+	# if player pressed jump in the last 0.2 seconds, even if they are
+	# not on the floor, they can still jump up
+	if(Input.is_action_just_pressed("ui_up")):
+		pressedJump = true
+		$PressedJumpTimer.start()
+		
 	return Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
-		-1 if is_on_floor() and Input.is_action_just_pressed("ui_up") else 0
+		-1 if is_on_floor() and pressedJump else 0
 	)
 
 
@@ -90,3 +97,12 @@ func get_new_animation():
 	else:
 		animation_new = "fall" if velocity.y > 0 else "jump"
 	return animation_new
+
+
+func _on_PressedJumpTimer_timeout():
+	pressedJump = false
+	$PressedJumpTimer.stop()
+
+func _on_LeftPlatformTimer_timeout():
+	#TODO need to implement this timer
+	pass # Replace with function body.
