@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 
 export var SPEED = Vector2(80.0, 200.0)
+export var ACCELERATION = Vector2(10.0, 0)
+export var FRICTION = Vector2(0.75, 0)
 onready var GRAVITY = ProjectSettings.get("physics/2d/default_gravity")
 onready var platform_detector = $PlatformDetector
 onready var animation_player = $AnimationPlayer
@@ -61,15 +63,23 @@ func calculate_move_velocity(
 		is_jump_interrupted
 	):
 	var velocity = linear_velocity
-	velocity.x = speed.x * direction.x
+	velocity.x = velocity.x  + (direction.x * ACCELERATION.x)
+	#print(direction.x * ACCELERATION.x)
+	if(velocity.x > SPEED.x):
+		velocity.x = SPEED.x
+	elif(velocity.x < -SPEED.x):
+		velocity.x = -SPEED.x
 	if direction.y != 0.0:
 		velocity.y = speed.y * direction.y
-		#print(velocity)
+	if direction.x == 0:
+		velocity.x *= FRICTION.x
+		
+	#print(velocity)
 #	if is_jump_interrupted:
 #		# Decrease the Y velocity by multiplying it, but don't set it to 0
 #		# as to not be too abrupt.
 #		velocity.y *= 0.9
-#	print(velocity)
+	
 	return velocity
 
 
