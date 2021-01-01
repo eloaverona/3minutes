@@ -14,6 +14,7 @@ const FLOOR_DETECT_DISTANCE = 20.0
 
 var velocity = Vector2.ZERO
 var pressedJump = false
+onready var isOnPlatform = is_on_floor()
 
 
 func _physics_process(delta):
@@ -49,17 +50,31 @@ func _physics_process(delta):
 
 
 func get_direction():
+	var playerCanJump = false;
 	# if player pressed jump in the last 0.2 seconds, even if they are
 	# not on the floor, they can still jump up
 	if(Input.is_action_just_pressed("ui_up")):
 		pressedJump = true
 		$PressedJumpTimer.start()
+	
+	# if player left the platform in the last 0.1 seconds, even if they are
+	# not on the floor, they can still jump up
+	if(is_on_floor()):
+		isOnPlatform = true
+		$LeftPlatformTimer.start()
 		
+	if(isOnPlatform && pressedJump):
+		playerCanJump = true
+		resetJump()
+
 	return Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
-		-1 if is_on_floor() and pressedJump else 0
+		-1 if playerCanJump else 0
 	)
 
+func resetJump():
+	pressedJump = false
+	$PressedJumpTimer.stop()
 
 # This function calculates a new velocity whenever you need it.
 # It allows you to interrupt jumps.
@@ -78,6 +93,7 @@ func calculate_move_velocity(
 		velocity.x = -SPEED.x
 	if direction.y != 0.0:
 		velocity.y = speed.y * direction.y
+
 	if direction.x == 0:
 		velocity.x *= FRICTION.x
 		
@@ -100,9 +116,8 @@ func get_new_animation():
 
 
 func _on_PressedJumpTimer_timeout():
-	pressedJump = false
-	$PressedJumpTimer.stop()
+	resetJump()
 
 func _on_LeftPlatformTimer_timeout():
-	#TODO need to implement this timer
-	pass # Replace with function body.
+	isOnPlatform = false
+	$LeftPlatformTimer.stop()

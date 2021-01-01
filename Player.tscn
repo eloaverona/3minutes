@@ -188,7 +188,10 @@ process_mode = 0
 
 [node name="PressedJumpTimer" type="Timer" parent="."]
 wait_time = 0.2
+one_shot = true
 
 [node name="LeftPlatformTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
 [connection signal="timeout" from="PressedJumpTimer" to="." method="_on_PressedJumpTimer_timeout"]
 [connection signal="timeout" from="LeftPlatformTimer" to="." method="_on_LeftPlatformTimer_timeout"]
