@@ -6,7 +6,7 @@ export var ACCELERATION = Vector2(10.0, 0)
 export var FRICTION = Vector2(0.75, 0)
 onready var GRAVITY = ProjectSettings.get("physics/2d/default_gravity")
 onready var platform_detector = $PlatformDetector
-onready var animation_player = $AnimationPlayer
+#onready var animation_player = $AnimationPlayer
 onready var sprite = $AnimatedSprite
 
 const FLOOR_NORMAL = Vector2.UP
@@ -42,7 +42,7 @@ func _physics_process(delta):
 		$AnimatedSprite.flip_v = false
 		# See the note below about boolean assignment
 		$AnimatedSprite.flip_h = velocity.x < 0
-
+	
 		
 	var animation = get_new_animation()
 	$AnimatedSprite.animation = animation
@@ -93,7 +93,6 @@ func calculate_move_velocity(
 		velocity.x = -SPEED.x
 	if direction.y != 0.0:
 		velocity.y = speed.y * direction.y
-
 	if direction.x == 0:
 		velocity.x *= FRICTION.x
 		
