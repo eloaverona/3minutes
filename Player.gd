@@ -6,6 +6,7 @@ export var ACCELERATION = Vector2(10.0, 0)
 export var FRICTION = Vector2(0.75, 0)
 onready var GRAVITY = ProjectSettings.get("physics/2d/default_gravity")
 onready var platform_detector = $PlatformDetector
+onready var no_platform_detector = $NoPlatformDetector
 #onready var animation_player = $AnimationPlayer
 onready var sprite = $AnimatedSprite
 
@@ -41,8 +42,7 @@ func _physics_process(delta):
 	if direction.x != 0:
 		$AnimatedSprite.flip_v = false
 		# See the note below about boolean assignment
-		$AnimatedSprite.flip_h = velocity.x < 0
-	
+		$AnimatedSprite.flip_h = direction.x < 0
 		
 	var animation = get_new_animation()
 	$AnimatedSprite.animation = animation
@@ -84,6 +84,7 @@ func calculate_move_velocity(
 		speed,
 		is_jump_interrupted
 	):
+	var isClimb = platform_detector.is_colliding() && !no_platform_detector.is_colliding();
 	var velocity = linear_velocity
 	velocity.x = velocity.x  + (direction.x * ACCELERATION.x)
 	#print(direction.x * ACCELERATION.x)
@@ -92,9 +93,19 @@ func calculate_move_velocity(
 	elif(velocity.x < -SPEED.x):
 		velocity.x = -SPEED.x
 	if direction.y != 0.0:
+		#if(!isClimb && isOnPlatform):
 		velocity.y = speed.y * direction.y
+		#else: 
+		#	velocity.y = 0
 	if direction.x == 0:
 		velocity.x *= FRICTION.x
+	
+	if(!isOnPlatform):
+#		print("get here")
+#		print(velocity)		
+		if(platform_detector.is_colliding() && !no_platform_detector.is_colliding()):
+#			print("get here 2")
+			velocity.y = 0
 		
 	#print(velocity)
 #	if is_jump_interrupted:
@@ -107,6 +118,7 @@ func calculate_move_velocity(
 
 func get_new_animation():
 	var animation_new = ""
+	print(abs(velocity.x))
 	if is_on_floor():
 		animation_new = "run" if abs(velocity.x) > 0.1 else "idle"
 	else:

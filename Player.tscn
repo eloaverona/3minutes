@@ -155,15 +155,12 @@ animations = [ {
 } ]
 
 [sub_resource type="CapsuleShape2D" id=26]
-radius = 4.4195
+radius = 3.85554
 height = 4.9507
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 1.34672, 6.53909 )
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_group_": true
-}
 SPEED = Vector2( 70, 200 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
@@ -173,13 +170,8 @@ frames = SubResource( 25 )
 animation = "fall"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 2.80191, -7.25751 )
+position = Vector2( 3.24786, -7.70346 )
 shape = SubResource( 26 )
-
-[node name="PlatformDetector" type="RayCast2D" parent="."]
-position = Vector2( 4.75918, 4.86813 )
-enabled = true
-cast_to = Vector2( 0, 6 )
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2( 2.77795, -21.1323 )
@@ -193,5 +185,15 @@ one_shot = true
 [node name="LeftPlatformTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
+
+[node name="PlatformDetector" type="RayCast2D" parent="."]
+position = Vector2( 3.5, -8.176 )
+enabled = true
+cast_to = Vector2( 6, 0 )
+
+[node name="NoPlatformDetector" type="RayCast2D" parent="."]
+position = Vector2( 3.5, -17.392 )
+enabled = true
+cast_to = Vector2( 6, 0 )
 [connection signal="timeout" from="PressedJumpTimer" to="." method="_on_PressedJumpTimer_timeout"]
 [connection signal="timeout" from="LeftPlatformTimer" to="." method="_on_LeftPlatformTimer_timeout"]
