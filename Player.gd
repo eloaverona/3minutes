@@ -11,26 +11,34 @@ onready var no_platform_detector = $NoPlatformDetector
 onready var sprite = $AnimatedSprite
 
 const FLOOR_NORMAL = Vector2.UP
-const FLOOR_DETECT_DISTANCE = 20.0
+const PLATFORM_DETECT_DISTANCE = Vector2(6.0, 0.0)
 
 var velocity = Vector2.ZERO
 var pressedJump = false
+var isClimbing = false
 onready var isOnPlatform = is_on_floor()
 
+func _on_ready():
+	platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
+	no_platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
 
 func _physics_process(delta):
 	velocity.y += delta * GRAVITY  ## player is affected by gravity
 	
 	$AnimatedSprite.play()
 	
-	var direction = get_direction()
+	var player_jumped = process_jump()
+	
+	process_climb()
+	
+	var direction = get_direction(player_jumped)
 
 	var is_jump_interrupted = Input.is_action_just_released("ui_up") and velocity.y < 0.0
 
 
 	velocity = calculate_move_velocity(velocity, direction, SPEED, is_jump_interrupted)
 
-	var snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE if direction.y == 0.0 else Vector2.ZERO
+	var snap_vector = Vector2.DOWN * PLATFORM_DETECT_DISTANCE if direction.y == 0.0 else Vector2.ZERO
 
 	velocity = move_and_slide_with_snap(
 		velocity, snap_vector, FLOOR_NORMAL, false, 4, 0.9, false
@@ -40,17 +48,26 @@ func _physics_process(delta):
 	# This will make the character face left or right depending on the direction you move.
 
 	if direction.x != 0:
-		$AnimatedSprite.flip_v = false
-		# See the note below about boolean assignment
-		$AnimatedSprite.flip_h = direction.x < 0
+		sprite.flip_v = false
+		sprite.flip_h = direction.x < 0
+		platform_detector.set_cast_to(Vector2(PLATFORM_DETECT_DISTANCE.x * direction.x, PLATFORM_DETECT_DISTANCE.y))
+		no_platform_detector.set_cast_to(Vector2(PLATFORM_DETECT_DISTANCE.x * direction.x, PLATFORM_DETECT_DISTANCE.y))
 		
 	var animation = get_new_animation()
-	$AnimatedSprite.animation = animation
+	sprite.animation = animation
 
+func process_climb():
+	if(!isOnPlatform):
+#		print("get here")
+#		print(velocity)		
+		if(platform_detector.is_colliding() && !no_platform_detector.is_colliding()):
+			isClimbing = true
+#			print("get here 2")
+		else:
+			isClimbing = false
 
-
-func get_direction():
-	var playerCanJump = false;
+func process_jump():
+	var playerJumped = false;
 	# if player pressed jump in the last 0.2 seconds, even if they are
 	# not on the floor, they can still jump up
 	if(Input.is_action_just_pressed("ui_up")):
@@ -63,13 +80,21 @@ func get_direction():
 		isOnPlatform = true
 		$LeftPlatformTimer.start()
 		
-	if(isOnPlatform && pressedJump):
-		playerCanJump = true
+	if((isOnPlatform || isClimbing) && pressedJump):
+		playerJumped = true
+		if(isClimbing):
+			platform_detector.set_enabled(false)
+			no_platform_detector.set_enabled(false)
+			yield(get_tree().create_timer(0.2), "timeout")		
+			platform_detector.set_enabled(true)
+			no_platform_detector.set_enabled(true)
 		resetJump()
+	return playerJumped
 
+func get_direction(playerJumped):
 	return Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
-		-1 if playerCanJump else 0
+		-1 if playerJumped else 0
 	)
 
 func resetJump():
@@ -84,7 +109,7 @@ func calculate_move_velocity(
 		speed,
 		is_jump_interrupted
 	):
-	var isClimb = platform_detector.is_colliding() && !no_platform_detector.is_colliding();
+	
 	var velocity = linear_velocity
 	velocity.x = velocity.x  + (direction.x * ACCELERATION.x)
 	#print(direction.x * ACCELERATION.x)
@@ -100,12 +125,8 @@ func calculate_move_velocity(
 	if direction.x == 0:
 		velocity.x *= FRICTION.x
 	
-	if(!isOnPlatform):
-#		print("get here")
-#		print(velocity)		
-		if(platform_detector.is_colliding() && !no_platform_detector.is_colliding()):
-#			print("get here 2")
-			velocity.y = 0
+	if(isClimbing):
+		velocity.y = 0
 		
 	#print(velocity)
 #	if is_jump_interrupted:
@@ -118,7 +139,6 @@ func calculate_move_velocity(
 
 func get_new_animation():
 	var animation_new = ""
-	print(abs(velocity.x))
 	if is_on_floor():
 		animation_new = "run" if abs(velocity.x) > 0.1 else "idle"
 	else:
