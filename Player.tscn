@@ -218,7 +218,7 @@ wait_time = 0.1
 one_shot = true
 
 [node name="PlatformDetector" type="RayCast2D" parent="."]
-position = Vector2( 3.5, -1.63536 )
+position = Vector2( 3.5, -7 )
 enabled = true
 cast_to = Vector2( 6, 0 )
 
