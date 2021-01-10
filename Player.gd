@@ -9,6 +9,8 @@ onready var platform_detector = $PlatformDetector
 onready var no_platform_detector = $NoPlatformDetector
 #onready var animation_player = $AnimationPlayer
 onready var sprite = $AnimatedSprite
+onready var collision_shape_right = $CollisionShape2D_right
+onready var collision_shape_left = $CollisionShape2D_left
 
 const FLOOR_NORMAL = Vector2.UP
 const PLATFORM_DETECT_DISTANCE = Vector2(6.0, 0.0)
@@ -21,6 +23,8 @@ onready var isOnPlatform = is_on_floor()
 func _on_ready():
 	platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
 	no_platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
+	collision_shape_left.set_disabled(true)
+	collision_shape_right.set_disabled(false)
 
 func _physics_process(delta):
 	velocity.y += delta * GRAVITY  ## player is affected by gravity
@@ -48,10 +52,15 @@ func _physics_process(delta):
 	# This will make the character face left or right depending on the direction you move.
 
 	if direction.x != 0:
-		sprite.flip_v = false
-		sprite.flip_h = direction.x < 0
+		var is_going_left = direction.x < 0
+		
+		sprite.flip_h = is_going_left
+		collision_shape_left.set_disabled(!is_going_left)
+		collision_shape_right.set_disabled(is_going_left)
+	
 		platform_detector.set_cast_to(Vector2(PLATFORM_DETECT_DISTANCE.x * direction.x, PLATFORM_DETECT_DISTANCE.y))
 		no_platform_detector.set_cast_to(Vector2(PLATFORM_DETECT_DISTANCE.x * direction.x, PLATFORM_DETECT_DISTANCE.y))
+
 		
 	var animation = get_new_animation()
 	sprite.animation = animation
@@ -141,6 +150,8 @@ func get_new_animation():
 	var animation_new = ""
 	if is_on_floor():
 		animation_new = "run" if abs(velocity.x) > 0.1 else "idle"
+	elif isClimbing:
+		animation_new = "climb"
 	else:
 		animation_new = "fall" if velocity.y > 0 else "jump"
 	return animation_new
