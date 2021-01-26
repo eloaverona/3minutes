@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/player/free-pixel-art-tiny-hero-sprites/1 Pink_Monster/Pink_Monster_Idle_4_grayscale.png" type="Texture" id=1]
-[ext_resource path="res://Person.gd" type="Script" id=2]
+[ext_resource path="res://Actors/Person.gd" type="Script" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4

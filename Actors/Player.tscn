@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/player/free-pixel-art-tiny-hero-sprites/3 Dude_Monster/Dude_Monster_Run_6.png" type="Texture" id=2]
 [ext_resource path="res://assets/player/free-pixel-art-tiny-hero-sprites/3 Dude_Monster/Dude_Monster_Idle_4.png" type="Texture" id=3]
 [ext_resource path="res://assets/player/free-pixel-art-tiny-hero-sprites/3 Dude_Monster/Dude_Monster_Jump_8.png" type="Texture" id=4]
-[ext_resource path="res://Player.gd" type="Script" id=5]
+[ext_resource path="res://Actors/Player.gd" type="Script" id=5]
 [ext_resource path="res://assets/player/free-pixel-art-tiny-hero-sprites/3 Dude_Monster/Dude_Monster_climb_custom.png" type="Texture" id=6]
 
 [sub_resource type="AtlasTexture" id=1]

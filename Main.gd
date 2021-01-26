@@ -19,7 +19,7 @@ func _ready():
 #		spawned = true
 
 func spawn_people():
-	var scene = load("res://Person.tscn")
+	var scene = load("res://Actors/Person.tscn")
 	for n in range(9):
 		var person = scene.instance()
 		add_child(person)

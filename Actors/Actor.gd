@@ -1,5 +1,6 @@
-class_name Player
+class_name Actor
 extends KinematicBody2D
+
 
 
 export var SPEED = Vector2(80.0, 200.0)
@@ -29,14 +30,17 @@ func _on_ready():
 
 func _physics_process(delta):
 	velocity.y += delta * GRAVITY  ## player is affected by gravity
-	
+
+
+## Handles all logic of player moving, including direction, jumps, climbs and animation
+func actor_move(jump, moveRightStrenght, moveLeftStrenght):
 	$AnimatedSprite.play()
 	
-	var player_jumped = process_jump()
+	var player_jumped = process_jump(jump)
 	
 	process_climb()
 	
-	var direction = get_direction(player_jumped)
+	var direction = get_direction(player_jumped, moveRightStrenght, moveLeftStrenght)
 
 	var is_jump_interrupted = Input.is_action_just_released("ui_up") and velocity.y < 0.0
 
@@ -65,22 +69,20 @@ func _physics_process(delta):
 		
 	var animation = get_new_animation()
 	sprite.animation = animation
+	
 
 func process_climb():
-	if(!isOnPlatform):
-#		print("get here")
-#		print(velocity)		
+	if(!isOnPlatform):	
 		if(platform_detector.is_colliding() && !no_platform_detector.is_colliding()):
 			isClimbing = true
-#			print("get here 2")
 		else:
 			isClimbing = false
 
-func process_jump():
+func process_jump(jump = false):
 	var playerJumped = false;
 	# if player pressed jump in the last 0.2 seconds, even if they are
 	# not on the floor, they can still jump up
-	if(Input.is_action_just_pressed("ui_up")):
+	if(jump):
 		pressedJump = true
 		$PressedJumpTimer.start()
 	
@@ -101,9 +103,9 @@ func process_jump():
 		resetJump()
 	return playerJumped
 
-func get_direction(playerJumped):
+func get_direction(playerJumped, moveRight, moveLeft):
 	return Vector2(
-		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
+		moveRight - moveLeft,
 		-1 if playerJumped else 0
 	)
 
@@ -122,27 +124,17 @@ func calculate_move_velocity(
 	
 	var velocity = linear_velocity
 	velocity.x = velocity.x  + (direction.x * ACCELERATION.x)
-	#print(direction.x * ACCELERATION.x)
 	if(velocity.x > SPEED.x):
 		velocity.x = SPEED.x
 	elif(velocity.x < -SPEED.x):
 		velocity.x = -SPEED.x
 	if direction.y != 0.0:
-		#if(!isClimb && isOnPlatform):
 		velocity.y = speed.y * direction.y
-		#else: 
-		#	velocity.y = 0
 	if direction.x == 0:
 		velocity.x *= FRICTION.x
 	
 	if(isClimbing):
 		velocity.y = 0
-		
-	#print(velocity)
-#	if is_jump_interrupted:
-#		# Decrease the Y velocity by multiplying it, but don't set it to 0
-#		# as to not be too abrupt.
-#		velocity.y *= 0.9
 	
 	return velocity
 
