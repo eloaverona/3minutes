@@ -36,6 +36,8 @@ radius = 3.856
 height = 4.951
 
 [node name="Person" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 4
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

@@ -187,6 +187,7 @@ height = 4.9507
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 1.34672, 6.53909 )
+collision_mask = 4
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true
@@ -228,10 +229,12 @@ one_shot = true
 position = Vector2( 3.5, -7 )
 enabled = true
 cast_to = Vector2( 6, 0 )
+collision_mask = 4
 
 [node name="NoPlatformDetector" type="RayCast2D" parent="."]
 position = Vector2( 3.5, -10 )
 enabled = true
 cast_to = Vector2( 6, 0 )
+collision_mask = 4
 [connection signal="timeout" from="PressedJumpTimer" to="." method="_on_PressedJumpTimer_timeout"]
 [connection signal="timeout" from="LeftPlatformTimer" to="." method="_on_LeftPlatformTimer_timeout"]

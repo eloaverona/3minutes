@@ -53,6 +53,15 @@ window/stretch/aspect="keep"
 
 singletons=[ "res://git_api.gdnlib", "res://godot-git-plugin-v1.2-x11/git_api.gdnlib" ]
 
+[layer_names]
+
+2d_render/layer_1="PlayerRender"
+2d_physics/layer_1="PlayerPhysics"
+2d_render/layer_2="PeopleRender"
+2d_physics/layer_2="PersonPhysics"
+2d_render/layer_3="PlatformRender"
+2d_physics/layer_3="PlatformPhysics"
+
 [physics]
 
 2d/default_gravity=900
