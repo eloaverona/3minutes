@@ -58,11 +58,13 @@ shape = SubResource( 6 )
 position = Vector2( -0.123924, 0.689786 )
 enabled = true
 cast_to = Vector2( 6, 0 )
+collision_mask = 4
 
 [node name="NoPlatformDetector" type="RayCast2D" parent="."]
 position = Vector2( -0.124, -3.069 )
 enabled = true
 cast_to = Vector2( 6, 0 )
+collision_mask = 4
 
 [node name="PressedJumpTimer" type="Timer" parent="."]
 wait_time = 0.2

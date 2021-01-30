@@ -23,10 +23,11 @@ var isClimbing = false
 onready var isOnPlatform = is_on_floor()
 
 func _on_ready():
-	platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
-	no_platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
-	collision_shape_left.set_disabled(true)
-	collision_shape_right.set_disabled(false)
+	print("dsdas")
+#	platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
+#	no_platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
+#	collision_shape_left.set_disabled(true)
+#	collision_shape_right.set_disabled(false)
 
 func _physics_process(delta):
 	velocity.y += delta * GRAVITY  ## player is affected by gravity
