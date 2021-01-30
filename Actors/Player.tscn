@@ -212,6 +212,9 @@ shape = SubResource( 30 )
 position = Vector2( 2.77795, -21.1323 )
 current = true
 process_mode = 0
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
 
 [node name="PressedJumpTimer" type="Timer" parent="."]
 wait_time = 0.2
