@@ -20,12 +20,12 @@ func spawn_people():
 	var scene = load("res://Actors/Person.tscn")
 	var rand = RandomNumberGenerator.new()
 	var screen_size = get_viewport().get_visible_rect().size
-	for n in range(9):
+	for n in range(1):
 		var person = scene.instance()
 		rand.randomize()
 		var x = rand.randf_range(0,screen_size.x)
 		rand.randomize()
 		var y = rand.randf_range(0,screen_size.y)
-		person.position.y = y
-		person.position.x = x
+		person.position.y = 10
+		person.position.x = 50 + (n*10)
 		add_child(person)
