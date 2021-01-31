@@ -186,13 +186,14 @@ radius = 3.85554
 height = 4.9507
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 1.34672, 6.53909 )
+position = Vector2( 2.05543, 4.01041 )
 collision_mask = 4
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true
 }
 SPEED = Vector2( 70, 200 )
+record = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 3.29358, -7.52979 )
@@ -218,10 +219,12 @@ drag_margin_v_enabled = true
 smoothing_enabled = true
 
 [node name="PressedJumpTimer" type="Timer" parent="."]
+process_mode = 0
 wait_time = 0.2
 one_shot = true
 
 [node name="LeftPlatformTimer" type="Timer" parent="."]
+process_mode = 0
 wait_time = 0.1
 one_shot = true
 
@@ -235,6 +238,4 @@ collision_mask = 4
 position = Vector2( 3.5, -10 )
 enabled = true
 cast_to = Vector2( 6, 0 )
-collision_mask = 4
-[connection signal="timeout" from="PressedJumpTimer" to="." method="_on_PressedJumpTimer_timeout"]
-[connection signal="timeout" from="LeftPlatformTimer" to="." method="_on_LeftPlatformTimer_timeout"]
+collision_mask = 2147483652

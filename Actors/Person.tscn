@@ -36,40 +36,45 @@ radius = 3.856
 height = 4.951
 
 [node name="Person" type="KinematicBody2D"]
+position = Vector2( 1.347, 0 )
 collision_layer = 2
 collision_mask = 4
 script = ExtResource( 2 )
+SPEED = Vector2( 70, 200 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 2.75608, -7.48078 )
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 5 )
 animation = "idle"
 
 [node name="CollisionShape2D_right" type="CollisionShape2D" parent="."]
-position = Vector2( -0.441944, 1.23744 )
+position = Vector2( 2.31413, -6.24334 )
 shape = SubResource( 6 )
 
 [node name="CollisionShape2D_left" type="CollisionShape2D" parent="."]
-position = Vector2( -0.441944, 1.23744 )
+position = Vector2( 2.31413, -6.24334 )
 scale = Vector2( -1, 1 )
 shape = SubResource( 6 )
 
+[node name="PressedJumpTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.2
+one_shot = true
+
+[node name="LeftPlatformTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.1
+one_shot = true
+
 [node name="PlatformDetector" type="RayCast2D" parent="."]
-position = Vector2( -0.123924, 0.689786 )
+position = Vector2( 3.25608, -6.79078 )
 enabled = true
 cast_to = Vector2( 6, 0 )
 collision_mask = 4
 
 [node name="NoPlatformDetector" type="RayCast2D" parent="."]
-position = Vector2( -0.124, -3.069 )
+position = Vector2( 3.25608, -10.5498 )
 enabled = true
 cast_to = Vector2( 6, 0 )
-collision_mask = 4
-
-[node name="PressedJumpTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-
-[node name="LeftPlatformTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
+collision_mask = 7

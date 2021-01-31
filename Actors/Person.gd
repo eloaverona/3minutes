@@ -27,9 +27,7 @@ func _physics_process(delta):
 
 		content = file.get_csv_line()
 		toJump = content
-		print(toJump)
-		
-		
+		#print(toJump)
 		#print(content)
 		read = true
 	var st_jump = toJump[jump_index]

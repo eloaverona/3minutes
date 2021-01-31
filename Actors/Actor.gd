@@ -15,19 +15,20 @@ onready var collision_shape_right = $CollisionShape2D_right
 onready var collision_shape_left = $CollisionShape2D_left
 
 const FLOOR_NORMAL = Vector2.UP
-const PLATFORM_DETECT_DISTANCE = Vector2(6.0, 0.0)
+export var PLATFORM_DETECT_DISTANCE = Vector2(6.0, 0.0)
 
 var velocity = Vector2.ZERO
 var pressedJump = false
 var isClimbing = false
 onready var isOnPlatform = is_on_floor()
 
-func _on_ready():
-	print("dsdas")
-#	platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
-#	no_platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
-#	collision_shape_left.set_disabled(true)
-#	collision_shape_right.set_disabled(false)
+func _ready():
+	platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
+	no_platform_detector.set_cast_to(PLATFORM_DETECT_DISTANCE)
+	collision_shape_left.set_disabled(true)
+	collision_shape_right.set_disabled(false)
+	$LeftPlatformTimer.connect("timeout", self, "_on_LeftPlatformTimer_timeout")
+	$PressedJumpTimer.connect("timeout", self, "_on_PressedJumpTimer_timeout")
 
 func _physics_process(delta):
 	velocity.y += delta * GRAVITY  ## player is affected by gravity
