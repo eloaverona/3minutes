@@ -5,6 +5,11 @@ export var record = false
 var moveRightRecord = []
 var moveLeftRecord = []
 var jumpRecord = []
+var initialPos = Vector2(0.0, 0.0)
+
+func _ready():
+	initialPos = global_position
+	
 
 func _physics_process(delta):
 
@@ -32,6 +37,10 @@ func _notification(what):
 		file.open("user://player-move.csv", File.READ_WRITE)
 		file.seek_end()
 		#file.store_string('\n')
+		var xPos = '%f' % initialPos.x
+		var yPos = '%f' % initialPos.y
+		var pos = [xPos, yPos]
+		file.store_csv_line(PoolStringArray(pos) )
 		file.store_csv_line(PoolStringArray(moveRightRecord))
 		file.store_csv_line(PoolStringArray(moveLeftRecord))
 		file.store_csv_line(PoolStringArray(jumpRecord))

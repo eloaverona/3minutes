@@ -14,37 +14,34 @@ var jump_index = 0
 var left_index = 0
 var read = false
 
+func initialize(right, left, jump):
+	toTheRight = right
+	toTheLeft = left
+	toJump = jump
+	
 # Called when the node enters the scene tree for the first time.
 func _physics_process(delta): 
-	if(!read):
-		var file = File.new()
-		file.open("user://player-move.csv", File.READ)
-		var content = file.get_csv_line()
-		toTheRight = content
-		
-		content = file.get_csv_line()
-		toTheLeft = content
-
-		content = file.get_csv_line()
-		toJump = content
-		#print(toJump)
-		#print(content)
-		read = true
+	
 	var st_jump = toJump[jump_index]
 	var jump = st_jump != 'False'
+	
 	var st = toTheRight[right_index]
+	if(st == ''):
+		right_index = 0
+		st = toTheRight[right_index]
+	
 	var st_left = toTheLeft[left_index]
 	if(st_left == ''):
 		left_index = 0
 		st_left = toTheLeft[left_index]
-	if(st == ''):
-		right_index = 0
-		st = toTheRight[right_index]
+	
 	var moveRightStrenght = int(toTheRight[right_index])
 	var moveLeftStrenght = int(toTheLeft[left_index])
+	
 	right_index += 1 
 	left_index += 1 
 	jump_index += 1 
+	
 	if(right_index >= toTheRight.size()):
 		right_index = 0
 	if(left_index >= toTheLeft.size()):
