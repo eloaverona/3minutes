@@ -8,7 +8,7 @@ var spawned = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	readMoveFile()
+	#readMoveFile()
 	spawn_people()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,10 +27,30 @@ var initalPos = Vector2(0.0, 0.0)
 func spawn_people():
 	var scene = load("res://Actors/Person.tscn")
 	var rand = RandomNumberGenerator.new()
+	var file = File.new()
+	file.open("user://player-move.csv", File.READ)
 	var screen_size = get_viewport().get_visible_rect().size
 	var max_number_of_person = 3
+	var n = 0
+	while(!file.eof_reached() && n < max_number_of_person):
+		n += 1 
+		
+		var content = file.get_csv_line()
+		print(content.size())
+		if(content.size() <= 1):
+			break
+		initalPos = Vector2(float(content[0]), float(content[1]))
+	
+		
+		content = file.get_csv_line()
+		toTheRight = content
+		
+		content = file.get_csv_line()
+		toTheLeft = content
 
-	for n in range(1):
+		content = file.get_csv_line()
+		toJump = content
+		
 		var person = scene.instance()
 		person.initialize(toTheRight, toTheLeft, toJump)
 		rand.randomize()
@@ -38,8 +58,9 @@ func spawn_people():
 		rand.randomize()
 		var y = rand.randf_range(0,screen_size.y)
 		person.position.y = initalPos.y
-		person.position.x = initalPos.y
+		person.position.x = initalPos.x
 		add_child(person)
+	file.close()
 
 
 
