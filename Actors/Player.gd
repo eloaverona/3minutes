@@ -1,7 +1,7 @@
 class_name Player
 extends Actor
 
-export var record = false
+export var record = true
 var moveRightRecord = []
 var moveLeftRecord = []
 var jumpRecord = []
