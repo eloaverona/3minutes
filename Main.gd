@@ -37,7 +37,7 @@ func read_file():
 		content = file.get_csv_line()
 		to_jump = content
 
-		var person = persone_scene.instance()
+		var person = person_scene.instance()
 		person.initialize(to_the_right, to_the_left, to_jump)
 		person.position.y = inital_posistion.y
 		person.position.x = inital_posistion.x
